@@ -1,0 +1,68 @@
+== Project and billing
+Manager gcp projects and add projects to the billing accounts.
+
+```
+# gcloud projects list
+# gcloud projects create bigdata-devel
+# gcloud beta billing accounts list
+# gcloud beta billing projects link bigdata-devel --billing-account=015058-51EAAF-0A2180
+```
+
+== Compute instances
+Manage gcp compute instances. 
+
+=== add ssh key metadata 
+[ssh using vanilla ssh client] - instance level metadata
+```
+# gcloud compute ssh user@instance-1
+# ssh-keygen
+# gcloud compute instances add-metadata instance-1 --metadata-from-file ssh-keys=ssh-keys-file.txt
+# ssh -i <private_key> user@instance-1
+```
+=== Snapshots
+Manage snapshots in gcp compute engine. 
+```
+# gcloud compute snapshots  list
+# gcloud compute disks list
+# gcloud compute disks snapshot instance-1 (instance name)
+# gcloud compute snapshots delete lnoe37wrpmhy
+```
+=== Images
+Manage images in gcp. 
+```
+# gcloud compute images list 
+# gcloud compute images delete image1-image
+```
+=== Google storage
+
+Manage GCP cloude object storage. 
+```
+# gsutils ls
+# gsutils mb -c regional -l us-east1 gs://cloud-learning-backups/
+# gsutil lifecycle set storage-lifecycle.json gs://cloud-learning-backup/
+# gsutil signurl -d 1m key.json gs://cloud-backup/get-pip.py
+# gsutil mv <src> <dest>
+# gsutil rb <bucket_name>
+```
+
+==== Gcloud multiple configurations
+Manage multiple cloud configurations. 
+```
+# gcloud config configurations create wazuh-devel
+# gcloud config set account user1@gmail.com
+# gcloud config set disable_usage_reporting True
+# gcloud config set compute/zone us-east1-b
+# gcloud config set compute/region us-east1
+```
+switch between configurations
+```
+# gcloud config configurations activate defaults
+```
+=== Kubernetes
+Manage Kubernetes engine in GCP. 
+```
+# gcloud container clusters list
+# gcloud container clusters resize openshift-devel  --size=4 --zone=us-central1-a
+# kubectl run nginx-app --image=nginx --port 80
+# kubectl exec -it nginx-768979984b-fldhz -- /bin/bash
+```
