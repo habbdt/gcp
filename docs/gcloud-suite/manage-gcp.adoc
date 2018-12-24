@@ -11,7 +11,7 @@ Manager gcp projects and add projects to the billing accounts.
 == Compute instances
 Manage gcp compute instances. 
 
-=== add ssh key metadata 
+=== Add ssh key metadata 
 [ssh using vanilla ssh client] - instance level metadata
 ```
 # gcloud compute ssh user@instance-1
@@ -58,7 +58,7 @@ switch between configurations
 ```
 # gcloud config configurations activate defaults
 ```
-=== Kubernetes
+==== Kubernetes
 Manage Kubernetes engine in GCP. 
 ```
 # gcloud container clusters list
