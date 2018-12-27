@@ -79,3 +79,10 @@ NOTE: App Engine offers no option to undeploy an application. After an applicati
 # dev_appserver.py ./app.yaml 
 # gcloud app deploy ./index.yaml ./app.yaml
 ```
+
+==== Deployment Manager
+
+```
+# gcloud deployment-manager deployments create my-first-deployment --config deploy_config.yaml
+# gcloud deployment-manager deployments update my-first-deployment --config mydeploy.yaml
+```
