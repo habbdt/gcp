@@ -43,6 +43,7 @@ Manage GCP cloude object storage.
 # gsutil signurl -d 1m key.json gs://cloud-backup/get-pip.py
 # gsutil mv <src> <dest>
 # gsutil rb <bucket_name>
+# gsutil acl ch -u allUsers:R gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png
 ```
 
 ==== Gcloud multiple configurations
@@ -61,8 +62,20 @@ switch between configurations
 ==== Kubernetes
 Manage Kubernetes engine in GCP. 
 ```
+# gcloud container clusters create webfrontend --zone $MY_ZONE --num-nodes 2
+# kubectl expose deployment nginx --port 80 --type LoadBalancer
 # gcloud container clusters list
 # gcloud container clusters resize openshift-devel  --size=4 --zone=us-central1-a
 # kubectl run nginx-app --image=nginx --port 80
 # kubectl exec -it nginx-768979984b-fldhz -- /bin/bash
+```
+
+==== App Engine
+Run an application using the built-in App Engine development server. 
+
+NOTE: App Engine offers no option to undeploy an application. After an application is deployed, it remains deployed, although you could instead replace the application with a simple page that says something like "not in service." However, you can disable the application, which causes it to no longer be accessible to users.
+
+```
+# dev_appserver.py ./app.yaml 
+# gcloud app deploy ./index.yaml ./app.yaml
 ```
