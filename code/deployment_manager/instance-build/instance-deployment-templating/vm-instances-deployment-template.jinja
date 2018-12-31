@@ -1,0 +1,26 @@
+resources:
+- name: vm-{{ env["name"] }}
+  type: compute.v1.instance
+  properties:
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          yum update -y
+          yum install nginx vim -y
+          systemctl enable nginx
+          systemctl start nginx
+    zone: {{ properties["zone"] }}
+    machineType: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/zones/{{ properties["zone"] }}/machineTypes/{{ properties["machineType"] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/family/centos-7
+    networkInterfaces:
+    - network: $(ref.{{ properties["network"] }}.selfLink)
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT

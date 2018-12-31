@@ -1,0 +1,10 @@
+=== GCP Deployment Manager
+
+```
+# gcloud deployment-manager deployments list
+# gcloud deployment-manager deployments describe deployment-with-2-vms 
+# gcloud deployment-manager manifests describe manifest-1546017096193 --deployment deployment-with-2-vms
+# gcloud deployment-manager resources list --deployment deployment-with-2-vms
+# gcloud deployment-manager deployments delete deployment-with-2-vms
+
+```

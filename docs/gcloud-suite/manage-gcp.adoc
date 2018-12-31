@@ -8,10 +8,19 @@ Manager gcp projects and add projects to the billing accounts.
 # gcloud beta billing projects link bigdata-devel --billing-account=015058-51EAAF-0A2180
 ```
 
-== Compute instances
-Manage gcp compute instances. 
+== Manager API
 
-=== Add ssh key metadata 
+```
+# gcloud services list --available
+# gcloud services list --enabled
+# gcloud services enable zync.googleapis.com
+# gcloud services disable zync.googleapis.com
+```
+
+== Compute instances
+Manage gcp compute instances.
+
+=== Add ssh key metadata
 [ssh using vanilla ssh client] - instance level metadata
 ```
 # gcloud compute ssh user@instance-1
@@ -20,7 +29,7 @@ Manage gcp compute instances.
 # ssh -i <private_key> user@instance-1
 ```
 === Snapshots
-Manage snapshots in gcp compute engine. 
+Manage snapshots in gcp compute engine.
 ```
 # gcloud compute snapshots  list
 # gcloud compute disks list
@@ -28,16 +37,17 @@ Manage snapshots in gcp compute engine.
 # gcloud compute snapshots delete lnoe37wrpmhy
 ```
 === Images
-Manage images in gcp. 
+Manage images in gcp.
 ```
-# gcloud compute images list 
+# gcloud compute images list
 # gcloud compute images delete image1-image
 ```
 === Google storage
 
-Manage GCP cloude object storage. 
+Manage GCP cloude object storage.
 ```
 # gsutils ls
+# gsutil iam get gs://propeller-dev2-public-bucket/
 # gsutils mb -c regional -l us-east1 gs://cloud-learning-backups/
 # gsutil lifecycle set storage-lifecycle.json gs://cloud-learning-backup/
 # gsutil signurl -d 1m key.json gs://cloud-backup/get-pip.py
@@ -47,7 +57,7 @@ Manage GCP cloude object storage.
 ```
 
 ==== Gcloud multiple configurations
-Manage multiple cloud configurations. 
+Manage multiple cloud configurations.
 ```
 # gcloud config configurations create wazuh-devel
 # gcloud config set account user1@gmail.com
@@ -60,7 +70,7 @@ switch between configurations
 # gcloud config configurations activate defaults
 ```
 ==== Kubernetes
-Manage Kubernetes engine in GCP. 
+Manage Kubernetes engine in GCP.
 ```
 # gcloud container clusters create webfrontend --zone $MY_ZONE --num-nodes 2
 # kubectl expose deployment nginx --port 80 --type LoadBalancer
@@ -71,13 +81,27 @@ Manage Kubernetes engine in GCP.
 ```
 
 ==== App Engine
-Run an application using the built-in App Engine development server. 
+Run an application using the built-in App Engine development server.
 
 NOTE: App Engine offers no option to undeploy an application. After an application is deployed, it remains deployed, although you could instead replace the application with a simple page that says something like "not in service." However, you can disable the application, which causes it to no longer be accessible to users.
 
 ```
-# dev_appserver.py ./app.yaml 
+# dev_appserver.py ./app.yaml
 # gcloud app deploy ./index.yaml ./app.yaml
+```
+==== Publisher/Subscriber
+
+```
+# gcloud pubsub topics create $PUB_SUB_TOPIC --project $PROJECT_NAME
+# gcloud pubsub topics list
+# gcloud pubsub topics delete <topics_name>
+```
+==== Bigtable
+
+```
+# gcloud beta bigtable instances list
+# gcloud beta bigtable clusters list
+
 ```
 
 ==== Deployment Manager

@@ -1,0 +1,8 @@
+=== Manage Authentication
+
+```
+# gcloud auth  list
+# gcloud auth login
+# gcloud config list
+# gcloud config configurations list
+```

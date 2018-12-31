@@ -1,0 +1,22 @@
+s{% set  NETWORK_NAME = "once-upon-a-custom-network" %}
+
+
+resources:
+- name: webserver1
+  type: vm-instances-deployment-template.jinja
+  properties:
+    machineType: f1-micro
+    zone: us-central1-a
+    network: {{ NETWORK_NAME }}
+- name: webserver2
+  type: vm-instances-deployment-template.jinja
+  properties:
+    machineType: f1-micro
+    zone: us-central1-a
+    network: {{ NETWORK_NAME }}
+- name: {{ NETWORK_NAME }}
+  type: vpc-networks-deployment-template.jinja
+- name: {{ NETWORK_NAME }}-firewall
+  type: firewall-deployment-template.jinja
+  properties:
+    network: {{ NETWORK_NAME }}

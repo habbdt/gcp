@@ -1,0 +1,9 @@
+imports:
+- path: vm-instances-deployment-template.jinja
+- path: vpc-networks-deployment-template.jinja
+- path: firewall-deployment-template.jinja
+- path: compute-engine-deployer-template.jinja
+
+resources:
+- name: webserver-compute-engine-setup
+  type: compute-engine-deployer-template.jinja

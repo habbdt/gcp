@@ -1,0 +1,7 @@
+=== Manage Networking in gcp
+
+```
+# gcloud compute networks list
+# gcloud compute firewall-rules list
+# gcloud compute networks subnets list
+```
