@@ -1,0 +1,7 @@
+imports:
+- path: vm-instances-deployment-template.jinja
+- path: compute-engine-deployer-template.jinja
+
+resources:
+- name: bind-server-compute-engine-setup
+  type: compute-engine-deployer-template.jinja

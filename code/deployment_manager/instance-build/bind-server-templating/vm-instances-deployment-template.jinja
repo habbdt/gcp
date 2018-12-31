@@ -1,0 +1,32 @@
+resources:
+- name: vm-{{ env["name"] }}
+  type: compute.v1.instance
+  properties:
+    tags:
+      items:
+      - network-ssh-allow
+      - http-server
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          sudo yum install bind bind-utils nginx -y
+          sudo systemctl enable named
+          sudo systemctl start named
+          sudo systemctl enable nginx
+          sudo systemctl start nginx
+    zone: {{ properties["zone"] }}
+    machineType: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/zones/{{ properties["zone"] }}/machineTypes/{{ properties["machineType"] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/family/centos-7
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/global/networks/propeller-dev2-app-network
+      subnetwork: https://www.googleapis.com/compute/v1/projects/{{ env["project"] }}/regions/us-central1/subnetworks/propeller-dev2-ad-app-network-subnet
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
