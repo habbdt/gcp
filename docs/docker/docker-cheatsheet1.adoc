@@ -1,0 +1,27 @@
+== Docker Volume Management
+Docker volume management. 
+
+```
+# docker volume list
+# docker volume create devvol
+# docker volume inspect devvol
+# docker container run -it --name devcontainer --mount source=devvol,target=/apps centos
+# docker container run -it --name hello-world -v devvol:/apps centos
+# docker container inspect centos-container
+```
+
+`docker container inspect <container_name>` display the container specifications. To confirm whether the volume is mounted or not, check the `Mounts` section. 
+
+== Docker Container Ports
+
+```
+# docker image history nginx
+# docker container inspect <container_name> | grep IPAddr
+# docker container run -d -P nginx
+# docker container run -d -p 80:80 httpd
+```
+-p, --publish list  Publish a container's port(s) to the host
+-P, --publish-all   Publish all exposed ports to random ports
+```
+
+Check the `docker image history <container_name>` to find the expoed port. 

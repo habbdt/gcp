@@ -1,0 +1,11 @@
+== Deploy Kubernetes Application - Simple
+
+```
+# kubectl run nginx-app --image marketplace.gcr.io/google/nginx1:1.14
+# kubectl scale deployment --replicas 4 nginx-app
+# kubectl get po -o wide
+# kubectl get deployments -o wide
+# kubectl expose deployment nginx-app --port 80 --type=LoadBalancer
+# kubectl get svc
+# kubectl set image deployment nginx-app nginx-app=marketplace.gcr.io/google/nginx1:1.15
+```

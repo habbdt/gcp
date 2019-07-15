@@ -6,6 +6,10 @@ resources:
       items:
       - network-ssh-allow
       - http-server
+    serviceAccounts:
+    - email: default
+      scopes:
+        - https://www.googleapis.com/auth/cloud-platform
     metadata:
       items:
       - key: startup-script

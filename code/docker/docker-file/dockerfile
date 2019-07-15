@@ -1,0 +1,12 @@
+FROM centos
+
+LABEL maintainer="bustam@protonmail.com"
+
+RUN yum update -y
+RUN yum install -y httpd
+RUN yum install -y python3 vim wget httpd
+
+ADD hello.py /home/hello.py
+ADD backup /tmp/backup
+
+WORKDIR /home

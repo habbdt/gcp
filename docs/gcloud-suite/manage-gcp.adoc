@@ -42,6 +42,16 @@ Manage images in gcp.
 # gcloud compute images list
 # gcloud compute images delete image1-image
 ```
+
+=== Manage Labels
+Manage labels in gcp.
+```
+# gcloud compute instances update instance-2 --update-labels sleep=now,state=readyfordeletion
+# gcloud compute instances create instance-2 --labels env=prod,owner=cat,team=marketing,component=midtier
+# gcloud compute instances describe instance-x | grep -A4 labels
+```
+
+
 === Google storage
 
 Manage GCP cloude object storage.
@@ -110,3 +120,4 @@ NOTE: App Engine offers no option to undeploy an application. After an applicati
 # gcloud deployment-manager deployments create my-first-deployment --config deploy_config.yaml
 # gcloud deployment-manager deployments update my-first-deployment --config mydeploy.yaml
 ```
+
