@@ -1,3 +1,11 @@
+== Get the Current Namespace
+
+```
+$ kubectl config current-context
+$ kubectl config set-context `kubectl config current-context` --namespace develop
+$ kubectl get sa default -o jsonpath='{.metadata.namespace}'
+```
+
 == Deploy Kubernetes Application - Simple
 
 ```
