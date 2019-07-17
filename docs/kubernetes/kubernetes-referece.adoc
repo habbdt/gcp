@@ -1,0 +1,68 @@
+== Authenticate with the GKE Cluster
+
+```
+# gcloud container clusters get-credentials your-first-cluster-1 --zone us-central1-a --project husnain-bustam-001
+```
+
+== Scale Up and Down Cluster
+For scaling up and down a GKE cluster use the following command. 
+
+```
+# gcloud container clusters resize your-first-cluster-1 --zone us-central1-a --node-pool pool-1 --size 4
+```
+
+== Upgrade Cluster
+
+```
+# gcloud container get-server-config [show available gke versions]
+# gcloud container clusters upgrade your-first-cluster-1 --master --cluster-version 1.13.7-gke.8 [upgrade master]
+# gcloud container clusters upgrade your-first-cluster-1 [upgrade nodes]
+# gcloud container node-pools update pool-1 --cluster your-first-cluster-1 --enable-autoupgrade [enable auto upgrade]
+# gcloud container node-pools update pool-1 --cluster your-first-cluster-1 --no-enable-autoupgrade [disable auto upgrade]
+# gcloud container clusters delete your-first-cluster-1
+```
+== Get the Current Namespace
+
+```
+$ kubectl config current-context
+$ kubectl config set-context `kubectl config current-context` --namespace develop
+$ kubectl get sa default -o jsonpath='{.metadata.namespace}'
+```
+
+== Deploy Kubernetes Application - Simple
+
+In the following example we will configure the Nginx app to run in the GKE cluster. 
+```
+# kubectl run nginx-app --image marketplace.gcr.io/google/nginx1:1.14
+# kubectl scale deployment --replicas 4 nginx-app
+# kubectl get po -o wide
+# kubectl get deployments -o wide
+# kubectl expose deployment nginx-app --port 80 --type=LoadBalancer
+# kubectl get svc
+# kubectl set image deployment nginx-app nginx-app=marketplace.gcr.io/google/nginx1:1.15
+```
+=== Build and Deployment Application 
+
+The following GH repository is part of Linux Academy GKE deep dive course. 
+
+`https://github.com/BPalmerLA/GoogleKubernetes/`
+
+```
+# docker build -t nginx-app .
+# docker tag nginx-app gcr.io/husnain-bustam-001/nginx-app:v1
+# gcloud auth configure-docker
+# docker push gcr.io/husnain-bustam-001/nginx-app:v1
+# gcloud container images list
+# kubectl run nginx-app-production --image gcr.io/husnain-bustam-001/nginx-app:v1
+# kubectl scale deployment --replicas 5 nginx-app-production
+# kubectl expose deployment nginx-app-production --port 80 --type=LoadBalancer
+```
+=== Scale Up and Down Applications
+Use the scale to scale up or down an application. Alternatively export the deployments to a file, edit the configurations and apply it.
+
+```
+# kubectl scale deployments --replicas 5 nginx-app     OR
+# kubectl get deployment nginx-app-production -o yaml >> nginx-app-production.yaml
+# kubectl apply -f nginx-app-production.yaml              OR
+# kubectl autoscale deployment nginx-app-production --cpu-percent=1 --min=13 --max=25
+```

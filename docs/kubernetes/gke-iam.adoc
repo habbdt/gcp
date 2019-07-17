@@ -1,0 +1,15 @@
+== GKE IAM Roles
+- Kubernetes Engine Admin: container.admin
+-- Full access to cluster and their GKE resources
+- Kubernetes Engine Developer: container.viewer
+-- Full access to running GKE cluster resources
+- Kubernetes Enginer Viewer: container.viewer
+-- RO access to clusters and their GKE resources
+- Kubernetes Engine Cluster Admin: container.admin
+-- Acess to manage clusters but no resources
+-- Must be paired with SA user role
+- Kubernetes Engine Host Service Agent User: container.hostServiceAgentUser
+-- Manage network resources
+-- Only for shared VPC
+-- For only SA not users
+
