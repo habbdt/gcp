@@ -13,3 +13,31 @@
 -- Only for shared VPC
 -- For only SA not users
 
+== GKE Role Based Access Control 
+=== Create Test Environment for RBAC Testing
+. Add a new user via `IAM & Admin` in GCP.
+.. Provide the user `Compute Storage Admin`, `Computer Viewer` and `Kubernetes Engine Cluster Viewer` role.
+. Create GKE cluster.
+. Authenticate the admin and the new user with the GKE cluster. [`gcloud container clusters get-credentials`]
+. Create a new NS and switch to that NS. [As admin user]
+. Create role and associate the new user with that role using rolebinding for the newly created NS. [As admin user]
+. Verify the new user's permission of the NS. [As new user]
+
+
+=== GKE Role Based Access Control - Role and Rolebindings
+GKE RBAC provides two types of permissions. 
+. Namespace specific
+. Cluster-wide
+A `role` is a collection of permission rules. A `rolebinding` connects user to role. 
+NOTE. Rules are additive, there is no deny option. 
+```
+$ kubectl get roles
+$ kubectl get rolebindings
+$ kubectl create role production-role-pods --verb=list --verb=get --verb=watch --resource=pods --namespace=production
+$ kubectl create rolebinding bustam.husnaina@gmail.com-production-ns-rb --role=production-role-pods --user=Bustam.Husnaina@gmail.com --namespace=production
+```
+```
+$ kubectl create clusterrole production-ns-reader --verb=list,get,watch --resource=pods,deployments
+$ kubectl create rolebinding hb-ns-rolebinding --clusterrole=production-ns-reader --user=Bustam.Husnaina@gmail.com --namespace=production
+$ kubectl create rolebinding hb-account --clusterrole=admin --user=Bustam.Husnaina@gmail.com --namespace=kube-public
+```
