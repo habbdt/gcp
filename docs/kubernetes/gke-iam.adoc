@@ -29,7 +29,7 @@ GKE RBAC provides two types of permissions.
 . Namespace specific
 . Cluster-wide
 A `role` is a collection of permission rules. A `rolebinding` connects user to role. 
-NOTE. Rules are additive, there is no deny option. 
+NOTE: Rules are additive, there is no deny option. 
 ```
 $ kubectl get roles
 $ kubectl get rolebindings
