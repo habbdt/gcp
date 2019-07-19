@@ -4,9 +4,25 @@ Steps to apply the GKE pod security policy.
 . Create Pod Security Policy (PSP)
 . Create clusterrole using the `yaml` file or from `cli`.
 . Create rolebinding 
-. Update the cluster PSP using the `gcloud` command 
+. Enable `PodSecurityPolicyController` admission controller. [Update the cluster PSP using the `gcloud` command.]
+
 `gcloud beta container clusters update your-first-cluster-1 --zone=us-central1-a --enable-pod-security-policy`
+
 .. To disable PSP use the following command. 
+
 `gcloud beta container clusters update your-first-cluster-1 --zone=us-central1-a --no-enable-pod-security-policy`
 
 NOTE: The `gcloud` command to enable or disable PSP on cluster level is still in beta. 
+NOTE: With multiple policeis, first that validated is accepted. 
+NOTE: Policies are evaluated alphabetically. 
+
+=== Enable PSP
+
+Following yaml files are from the Linux Academy GKE deep dive course. 
+
+. https://github.com/BPalmerLA/GoogleKubernetes/blob/master/la-psp.yaml
+. https://github.com/BPalmerLA/GoogleKubernetes/blob/master/la-clusterrole.yaml
+. https://github.com/BPalmerLA/GoogleKubernetes/blob/master/la-rolebinding.yaml
+
+```
+
