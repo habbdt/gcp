@@ -1,0 +1,24 @@
+== Integrating with other Google Cloud Service
+
+Most GCP services use service accounts and secrets. In this example the pubsub will be integrated with the GKE. Follow the following steps to integrate pub/sub with the GKE.
+
+. Create a pub/sub topics
+.. Create pub/sub subscriber
+. Create a service account and provide Pub/Sub subscriber role.
+.. Create key for the service account (`key.json`)
+. Create secrents using the generated key. 
+. Deploy the pod
+. From the Pub/Sub publish a message.
+. Check the container logs. 
+
+```
+https://github.com/BPalmerLA/GoogleKubernetes/blob/master/deployment.yaml
+https://github.com/BPalmerLA/GoogleKubernetes/blob/master/deployment-secrets.yaml
+```
+
+```
+$ kubectl create secret generic pubsub-key --from-file=key.json
+$ kubectl get secrets
+$ kubectl get po -l app=pubsub
+$ kubectl logs -l app=pubsub
+```

@@ -1,0 +1,26 @@
+
+=== Configuring Load Balancer
+
+. External load balancer
+. Internal load balancer
+
+
+
+
+=== GKE Create Private Cluster
+
+. Private cluster master node is publicly inaccessible. 
+. Relies on VPC native range. 
+. Private cluster must use the container registry image. 
+
+==== Create Private Cluster 
+
+. New cluster --> Advanced 
+.. VPC-native [Enable VPC-native (using alias IP)]
+.. Network Security --> Private cluster
+... Access master using its external IP address --> Master IP range
+.. Master authorized networks --> enable
+... Add authorized network
+.... Put the CIDR range. 
+
+NOTE: `Master authorized networks` - This will restrict all external traffic to access GKE master through `https` except traffic from the specific CIDR block. 

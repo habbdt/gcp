@@ -1,0 +1,13 @@
+== GKE StatefulSets Pods
+
+. Stateful applications requires persistent disk storage. 
+.. Persistent disk storage are dynamically provisioned and zonal resources. 
+.. Configured with a StorageClass
+
+Example StatefulSets container.
+
+`https://github.com/BPalmerLA/GoogleKubernetes/blob/master/stateful-config.yaml`
+
+```
+$ kubectl apply -f stateful-config.yaml
+```
