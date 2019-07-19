@@ -1,4 +1,6 @@
-== Kubernetes Pod Security Policy
+= Kubernetes Pod Security Policy
+. GKE pod security policy is a cluster level resource that manages access to create and update pods. 
+
 Steps to apply the GKE pod security policy. 
 
 . Create Pod Security Policy (PSP)
@@ -25,4 +27,43 @@ Following yaml files are from the Linux Academy GKE deep dive course.
 . https://github.com/BPalmerLA/GoogleKubernetes/blob/master/la-rolebinding.yaml
 
 ```
+$ kubectl get psp
+$ kubectl apply -f la-psp.yaml			[create policy]
+$ kubectl apply -f la-clusterrole.yaml		[create role]
+$ kubectl apply -f la-rolebinding.yaml		[create rolebinding]
+$ gcloud beta container clusters update security-testing-cluster-1 --zone=us-central1-a --enable-pod-security-policy	[apply policy]
+$ gcloud beta container clusters upadte security-testing-cluster-1 --zone=us-central1-a --no-enable-pod-security-policy	    [disable policy]
+```
 
+== GKE Imeplementing Security Protocols
+
+. Master node IP address rotation
+. Worker nodes credential rotation
+
+=== Cluster Master Node IP Rotation
+
+Master node IP address is static and vulnerable. When the ip rotation is initiated the master node serves both old and new ip addressuntil process is completed. 
+
+```
+$ gcloud container clusters update security-testing-cluster-1 --start-ip-rotation --zone us-central1-a
+$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project pcln-pl-net-sandbox
+$ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --complete-ip-rotation
+```
+
+=== Worker Nodes Credential Update
+
+Credentials authenticate worker node workload and the master node control plane. 
+
+```
+$ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --start-credential-rotation
+$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project pcln-pl-net-sandbox
+$ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --complete-credential-rotation
+```
+
+=== Additional Security
+
+. Add network policy for pod-to-pod communication. 
+
+```
+$ gcloud container clusters create <cluster_name> zone=<zone_name> --enable-network-policy
+```
