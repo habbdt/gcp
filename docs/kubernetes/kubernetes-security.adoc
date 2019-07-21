@@ -67,3 +67,22 @@ $ gcloud container clusters update security-testing-cluster-1 --zone us-central1
 ```
 $ gcloud container clusters create <cluster_name> zone=<zone_name> --enable-network-policy
 ```
+
+=== GKE Network Policy
+
+. Network policies define how groups of pods communicate with each other and with services. 
+. Creates pod-level firewall rules.
+. Network policy uses additional node resources ( ~128 MB RAM).
+
+`https://github.com/BPalmerLA/GoogleKubernetes/blob/master/lac-network-policy.yaml`
+
+==== Create Network Policy
+
+. Cluster --> node pool --> Network Policy for Master (enable)
+. Cluster --> node pool --> Network Policy for Node (enable)
+
+To disable network policy, disable node first and then disable the master. 
+
+```
+$ kubectl apply -f lac-network-policy.yaml
+```
