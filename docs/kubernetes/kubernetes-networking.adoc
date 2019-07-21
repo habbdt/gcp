@@ -2,10 +2,28 @@
 === Configuring Load Balancer
 
 . External load balancer
+.. Support both TCP and UDP protocol.
 . Internal load balancer
+.. Allows cluster access by services on the same network.
+.. Create using `yaml` file.
+.. Services must use the same network and region. 
+.. Same protocol type must be used (TCP/UDP)
 
+Options for exposing deployments,
 
+. Load balancing - external IP for public access
+. Cluster IP - Uses internal IP in the cluster
+. Node port - Uses same port on every node
 
+==== Enable Internal Load Balancer
+
+https://github.com/BPalmerLA/GoogleKubernetes/blob/master/internal-lb.yaml
+
+```
+$ kubectl apply -f internal-lb.yaml
+$ kubectl get svc
+$ kubectl describe svc <lb>
+```
 
 === GKE Create Private Cluster
 

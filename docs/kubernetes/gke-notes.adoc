@@ -1,0 +1,3 @@
+== GKE Cluster
+
+Clusters can be created across a region or in a single zone. A single zone is the default. When you deploy across a region the nodes are deployed to three separate zones and the total number of nodes deployed will be three times higher.
