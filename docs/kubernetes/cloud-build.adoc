@@ -1,0 +1,4 @@
+
+git clone https://github.com/GoogleCloudPlatformTraining/training-data-analyst
+gcloud builds submit --config cloudbuild.yaml .
+

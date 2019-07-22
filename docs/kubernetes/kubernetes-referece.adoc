@@ -1,3 +1,53 @@
+== Kubectl
+
+. `kubectl` relies on a config file located at `$HOME/.kube/config`
+.. Cotains - target cluster name and credentails for the cluster
+
+How `kubectl` works?
+
+. When administrator invoke a `kubectl` command, it is translated into an API call and sends this to `kube-apiserver` in cluster master serve through `https`.
+. The `kube-apiserver` processes the request quering `etcd` and send API response through `https` to `kubectl`.
+. `kubectl` translates the API and displays results to the screen. 
+
+`kubectl    [command]    [type]    [name]    [flags]`
+
+
+```
+$ kubectl config view
+
+```
+
+== Pods Status
+
+. Pending
+. Running
+. Succeeded - all the containers have be completed running sucessfully and those will not be restarted. 
+. Failed
+. UNKNOWN - state of the pods can not be retrieved. 
+. CrashLoopBackOff - One of the containers in the pod exited unexpectedly after restarting at least once. 
+
+
+```  
+$ kubectl logs -l run=nginx-app
+$ kubectl get po
+$ kubectl describe po nginx-app-9b58d8df5-2xxbs
+$ kubectl logs po nginx-app-9b58d8df5-2xxbs
+$ kubectl logs nginx-app-9b58d8df5-2xxbs
+$ kubectl exec nginx-app-9b58d8df5-2xxbs whoami
+$ kubectl exec nginx-app-9b58d8df5-2xxbs ls /
+$ kubectl exec -it nginx-app-9b58d8df5-2xxbs  -- /bin/bash
+```
+
+== Build GKE Cluster
+
+```
+$ export  my_zone=us-central1-a
+$ export my_cluster=standard-cluster-1
+$ gcloud container clusters create $my_cluster --num-nodes 3 --zone $my_zone --enable-ip-alias
+```
+
+https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
+
 == Authenticate with the GKE Cluster
 
 ```
