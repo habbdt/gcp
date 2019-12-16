@@ -1,0 +1,20 @@
+=== Service Accounts
+
+```
+# gcloud iam service-accounts create my-sa-123 --display-name "my service account"
+# gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+    --member serviceAccount:my-sa-123@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com --role roles/editor
+
+```
+
+=== Customer Supplied Encvryption Keys (CSEK)
+
+Download GCE public certificate.
+
+```
+$ openssl rand 32 > mykey.txt
+$ curl https://cloud-certs.storage.googleapis.com/google-cloud-csek-ingress.pem > gce-cert.pem
+$ openssl x509 -pubkey -noout -in gce-cert.pem > pubkey.pem
+$ openssl rsautl -oaep -encrypt -pubin -inkey pubkey.pem -in mykey.txt -out rsawrappedkey.txt
+$ openssl enc -base64 -in rsawrappedkey.txt | tr -d '\n' | sed -e '$a\' > rsawrapencodedkey.txt
+```
