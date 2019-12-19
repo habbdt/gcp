@@ -1,0 +1,12 @@
+=== IAM Roles / Custom Roles
+
+```    
+gcloud iam roles list --project $DEVSHELL_PROJECT_ID
+gcloud iam roles describe app_viewer --project $DEVSHELL_PROJECT_ID
+vim update-role.yaml
+gcloud iam roles update app_viewer --project $DEVSHELL_PROJECT_ID --file update-role.yaml
+gcloud iam roles update app_viewer --project $DEVSHELL_PROJECT_ID --stage DISABLED
+gcloud iam roles list --project=$DEVSHELL_PROJECT_ID --show-deleted
+gcloud iam roles undelete app_viewer --project $DEVSHELL_PROJECT_ID
+gcloud iam roles list --project $DEVSHELL_PROJECT_ID
+```

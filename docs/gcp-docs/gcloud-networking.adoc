@@ -4,4 +4,10 @@
 # gcloud compute networks list
 # gcloud compute firewall-rules list
 # gcloud compute networks subnets list
+# gcloud compute networks subnets --sort-by=NETWORK
+# gcloud compute firewall-rules list --sort-by=NETWORK
+gcloud compute --project=qwiklabs-gcp-00-0f201addf8dc networks create managementnet --description=managementnet --subnet-mode=custom
+
+gcloud compute --project=qwiklabs-gcp-00-0f201addf8dc networks subnets create managementsubnet-us --network=managementnet --region=us-central1 --range=10.130.0.0/20
+gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp:22,tcp:3389 --source-ranges=0.0.0.0/0
 ```

@@ -1,0 +1,28 @@
+=== Stackdrive Logging
+
+Example code to extract response code for http: BQ
+
+```
+#standardSQL
+  with requests AS (
+  SELECT
+    COUNT(*) req_count
+  FROM
+    `project_logs.requests_20191218`)
+SELECT
+  httpRequest.status AS status,
+  COUNT(httpRequest) AS requests,
+  ROUND(COUNT(httpRequest)/req_count * 100,1) AS percent
+FROM
+  `project_logs.requests_20191218`,
+  requests
+GROUP BY
+  httpRequest.status,
+  req_count
+ORDER BY
+  percent DESC
+```
+
+```
+# gcloud logging read "resource.type=gce_instance AND logName=projects/[PROJECT_ID]/logs/syslog AND textPayload:SyncAddress" --limit 10 --format json
+```
