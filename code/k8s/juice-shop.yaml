@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: juiceshop
+  namespace: security
+  labels:
+    app.kubernetes.io/name: security
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
+spec:
+  type: LoadBalancer
+  selector:
+    app: juiceshop
+  ports:
+    - name: juiceshop-port
+      protocol: TCP
+      port: 8080
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: juiceshop
+    namespace: security
+    labels:
+      app: juiceshop
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: juiceshop
+    template:
+      metadata:
+        labels:
+          app: juiceshop
+      spec:
+        containers:
+        - name: juiceshop
+          image: <image>
+          ports:
+          - containerPort: 3000

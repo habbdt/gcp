@@ -1,0 +1,42 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: vulnerablewordpress
+  namespace: security
+  labels:
+    app.kubernetes.io/name: security
+  annotations:
+    cloud.google.com/load-balancer-type: Internal
+spec:
+  type: LoadBalancer
+  selector:
+    app: vulnerablewordpress
+  ports:
+    - name: vulnerablewordpress-port
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: vulnerablewordpress
+    namespace: security
+    labels:
+      app: vulnerablewordpress
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: vulnerablewordpress
+    template:
+      metadata:
+        labels:
+          app: vulnerablewordpress
+      spec:
+        containers:
+        - name: vulnerablewordpress
+          image: vulnerablewordpress
+          ports:
+          - containerPort: 80
