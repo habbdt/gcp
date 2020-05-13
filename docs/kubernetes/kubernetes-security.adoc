@@ -46,7 +46,7 @@ Master node IP address is static and vulnerable. When the ip rotation is initiat
 
 ```
 $ gcloud container clusters update security-testing-cluster-1 --start-ip-rotation --zone us-central1-a
-$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project pcln-pl-net-sandbox
+$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project sandbox
 $ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --complete-ip-rotation
 ```
 
@@ -56,7 +56,7 @@ Credentials authenticate worker node workload and the master node control plane.
 
 ```
 $ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --start-credential-rotation
-$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project pcln-pl-net-sandbox
+$ gcloud container clusters get-credentials security-testing-cluster-1 --zone us-central1-a --project sandbox
 $ gcloud container clusters update security-testing-cluster-1 --zone us-central1-a --complete-credential-rotation
 ```
 
