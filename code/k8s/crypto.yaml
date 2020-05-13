@@ -1,0 +1,21 @@
+# cryptocurrency/xmr-stak-cpu - https://hub.docker.com/r/cryptocurrency/xmr-stak-cpu
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: crypto
+    namespace: security
+    labels:
+      app: crypto
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: crypto
+    template:
+      metadata:
+        labels:
+          app: crypto
+      spec:
+        containers:
+        - name: crypto
+          image: xmr-stak-cpu

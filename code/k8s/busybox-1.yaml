@@ -1,0 +1,14 @@
+# kubectl exec busybox -- nslookup nginx
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  containers:
+  - image: busybox:1.28.4
+    command:
+      - sleep
+      - "3600"
+    name: busybox
+  restartPolicy: Always

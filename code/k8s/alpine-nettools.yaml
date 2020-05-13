@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: alpine-nettools
+    namespace: security
+    labels:
+      app: alpine-nettools
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: alpine-nettools
+    template:
+      metadata:
+        labels:
+          app: alpine-nettools
+      spec:
+        containers:
+        - name: alpine-nettools
+          image: alpine-nettools
+          securityContext:
+            runAsUser: 0

