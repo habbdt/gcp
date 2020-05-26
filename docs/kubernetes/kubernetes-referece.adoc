@@ -51,7 +51,7 @@ https://cloud.google.com/sdk/gcloud/reference/container/clusters/create
 == Authenticate with the GKE Cluster
 
 ```
-# gcloud container clusters get-credentials your-first-cluster-1 --zone us-central1-a --project husnain-bustam-001
+# gcloud container clusters get-credentials your-first-cluster-1 --zone us-central1-a --project <gcp_project_name>
 ```
 
 == Scale Up and Down Cluster
@@ -99,11 +99,11 @@ The following GH repository is part of Linux Academy GKE deep dive course.
 
 ```
 # docker build -t nginx-app .
-# docker tag nginx-app gcr.io/husnain-bustam-001/nginx-app:v1
+# docker tag nginx-app gcr.io/<gcp_project>/nginx-app:v1
 # gcloud auth configure-docker
-# docker push gcr.io/husnain-bustam-001/nginx-app:v1
+# docker push gcr.io/<gcp_project>/nginx-app:v1
 # gcloud container images list
-# kubectl run nginx-app-production --image gcr.io/husnain-bustam-001/nginx-app:v1
+# kubectl run nginx-app-production --image gcr.io/<gcp_project>/nginx-app:v1
 # kubectl scale deployment --replicas 5 nginx-app-production
 # kubectl expose deployment nginx-app-production --port 80 --type=LoadBalancer
 ```
