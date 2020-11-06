@@ -1,3 +1,2 @@
-#  README
-
-Google Cloud Platform. 
+# gcpsec
+Scan Google Cloud Platform for insecure configurations. WIP
