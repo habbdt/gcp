@@ -3,7 +3,7 @@
 # find resources by network tags
 
 NTAG=$1
-SEARCH_TERM=$2
+SEARCH_PHRASE=$2
 
 if [ "$#" -ne 2 ]
 then
@@ -31,14 +31,15 @@ function network_tags() {
       then
         :
       else
+        #gcloud compute instances list --project=tapad-dataplatform-prd  --filter='-tags =dataflow'
         RESOURCE="$(gcloud compute instances list --project=$proj \
-                  --filter='-tags =$NTAG'
-               )"
+                  --filter='-tags =$NTAG')"
         if [ -z "$RESOURCE" ]
         then
           :
         else
           echo "[x] resource tag $NTAG is present in project $proj"
+          echo "$RESOURCE"
         fi
       fi
     done
