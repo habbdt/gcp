@@ -86,9 +86,9 @@ function quadzeros_fwrules() {
       then
         :
       else
-        QUAD_ZERO="$(gcloud compute firewall-rules list \
-                    --format="table(name,network,direction,sourceRanges.list())"  \
-                    --filter=SOURCE_RANGES~0.0.0.0/0)"
+        QUAD_ZERO="$(gcloud compute firewall-rules list --project $proj\
+                    --format="table(name,network,direction,priority,sourceRanges.list())"  \
+                    --filter=SOURCE_RANGES~0.0.0.0)"
         echo "[!] project $proj has FIREWALL RULES WITH QUAD_ZEROS IN SOURCE_RANGES"
         echo "$QUAD_ZERO"
       fi
