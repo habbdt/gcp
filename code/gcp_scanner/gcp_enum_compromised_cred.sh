@@ -112,15 +112,15 @@ function reconnaissance() {
   echo $?
 
   echo "[x] scanning for cloud dns zones"
-  CMD="$(gcloud dns managed-zones list  --project=$PROJ)"
+  CMD="$(gcloud dns managed-zones list  --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for dns project info"
-  CMD="$(gcloud dns project-info describe $PROJ)"
+  CMD="$(gcloud dns project-info describe $PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud functions"
-  CMD="$(gcloud functions list --project=$PROJ 2>&1 > /dev/null)"
+  CMD="$(gcloud functions list --regions=us-east4 --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud sql instances"
@@ -160,63 +160,63 @@ function reconnaissance() {
   echo $?
 
   echo "[x] scanning for the kms keyring"
-  CMD="$(gcloud kms keyrings list --location=global --project=$PROJ)"
+  CMD="$(gcloud kms keyrings list --location=global --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud logging"
-  CMD="$(gcloud logging logs list --project=$PROJ)"
+  CMD="$(gcloud logging logs list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud logging sinks"
-  CMD="$(gcloud logging sinks list --project=$PROJ)"
+  CMD="$(gcloud logging sinks list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for pubsub topics"
-  CMD="$(gcloud pubsub topics list --project=$PROJ)"
+  CMD="$(gcloud pubsub topics list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for pubsub subscriptions"
-  CMD="$(gcloud pubsub subscriptions list --project=$PROJ)"
+  CMD="$(gcloud pubsub subscriptions list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for ai-platform access"
-  CMD="$(gcloud ai-platform jobs list  --project=$PROJ)"
+  CMD="$(gcloud ai-platform jobs list  --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for gcs buckets"
-  CMD="$(gsutil ls -p $PROJ)"
+  CMD="$(gsutil ls -p $PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud spanner instances"
-  CMD="$(gcloud spanner instances list --project=$PROJ)"
+  CMD="$(gcloud spanner instances list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud source repositories"
-  CMD="$(gcloud source repos list --project=$PROJ)"
+  CMD="$(gcloud source repos list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for cloud builds"
-  CMD="$(gcloud builds list  --project=$PROJ)"
+  CMD="$(gcloud builds list  --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for dataflow jobs"
-  CMD="$(gcloud dataflow jobs list --region=us-east4 --project=$PROJ)"
+  CMD="$(gcloud dataflow jobs list --region=us-east4 --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for datastore indexes"
-  CMD="$(gcloud datastore indexes list --project=$PROJ)"
+  CMD="$(gcloud datastore indexes list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for gcloud deployment manager deployments list"
-  CMD="$(gcloud deployment-manager deployments list --project=$PROJ)"
+  CMD="$(gcloud deployment-manager deployments list --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for domains verified users"
-  CMD="$(gcloud domains list-user-verified --project=$PROJ)"
+  CMD="$(gcloud domains list-user-verified --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 
   echo "[x] scanning for redis instances list"
-  CMD="$(gcloud redis instances list --region=us-east4 --project=$PROJ)"
+  CMD="$(gcloud redis instances list --region=us-east4 --project=$PROJ 2>&1 > /dev/null)"
   echo $?
 }
 
