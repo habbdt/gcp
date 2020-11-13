@@ -1,0 +1,10 @@
+== Cloud Logging Filters
+
+This document contains useful cloud logging (a.k.a Stackdriver logging) filter to detect IoCs in the GKE cluster.
+
+=== Detect `exec` into the k8s container
+
+```
+resource.type="K8s_cluster"
+protoPayload.authorizationInfo.permission="io.k8s.core.v1.pods.exec.create"
+```
