@@ -33,6 +33,7 @@ function external_ip_checker() {
       else
         gce_instances_extip
         external_ips
+        cloudsql_ips
       fi
     done
 }
@@ -55,14 +56,39 @@ function gce_instances_extip() {
 
 function external_ips() {
     EXTERNAL_IPS_RESERVED="$(gcloud compute addresses list --format="get(ADDRESS,STATUS)" \
-                            | tr -s '[:blank:]' ','
+                           --project $proj | tr -s '[:blank:]' ','
                           )"
     for ext_ip in $EXTERNAL_IPS_RESERVED ; do
-      if [ -n "$ext_ip" ]
+      if [ -z "$ext_ip" ]
       then
+        :
+      else
         echo "[!] external ip address is $ext_ip"
       fi
     done
 }
 
+# cloud sql public IPs
+
+function cloudsql_ips() {
+    API_STATUS="$(gcloud services list --enabled --filter=NAME~sqladmin.googleapis.com \
+                  --project $proj
+                )"
+    if [ -z "$API_STATUS" ]
+    then
+      :
+    else
+      SQL_INSTANCES="$(gcloud sql instances list --format=json --project=$proj \
+                      |  jq '.[] | .ipAddresses |.[] | .ipAddress'
+                      )"
+      for ext_ip in $SQL_INSTANCES ; do
+        if [ -n "$ext_ip" ]
+        then
+          echo "[!] cloudsql public ip is: $ext_ip"
+        fi
+      done
+    fi
+}
+
+# call function
 external_ip_checker
