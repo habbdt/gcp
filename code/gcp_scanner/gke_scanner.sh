@@ -54,8 +54,8 @@ function  master_scanner() {
         for element in $CLUSTERS; do
           GKE_CLUSTER="$(echo $element | rev | cut -d "/" -f 1 | rev)"
           GKE_REGION="$(echo $element | rev | cut -d "/" -f 3 | rev)"
-          #image_scan
-          #k8s_services
+          image_scan
+          k8s_services
           ingress_controller
         done
       fi
