@@ -11,7 +11,7 @@ GCS_SCAN=$2
 if [ "$#" -ne 2 ]; then
   echo "Usage: gcs_cis_benchmark.sh <search_phrase> <gcs_search>"
   echo "search phrase - common word in the gcp project naming pattern"
-  echo "GCS_SEARCH: GCS_PUBLIC, CIS_CHK, UNIFORM_BUCKET_ACCESS"
+  echo "GCS_SEARCH: GCS_PUBLIC, CIS_CHK, UNIFORM_BUCKET_ACCESS, HMAC_KEYS, LIFECYCLE, BUCKET_LOGGING, CORS"
   exit
 fi
 
@@ -27,7 +27,7 @@ function MASTER_SCANNER() {
     if [ -z "$API_STATUS" ]; then
       :
     else
-      echo "[CIS51] scanning project $proj for gcs bucket $GCS_SCAN"
+      echo "[x] scanning project $proj for gcs bucket $GCS_SCAN"
       if [[ "$GCS_SCAN" == "CIS_CHK" ]]; then
         CIS_CHK
       else
@@ -91,6 +91,49 @@ function UNIFORM_BUCKET_ACCESS() {
       else
         :
       fi
+    done
+}
+
+# list hmac keys accross all the projects
+
+function HMAC_KEYS() {
+    HMAC="$(gsutil hmac list -p $proj)"
+    if [ -z "$HMAC" ]
+    then
+      :
+    else
+      echo "[!] project $proj has HMAC key(s) "
+      echo "$HMAC"
+    fi
+}
+
+# scan for buckets lifecycle
+
+function LIFECYCLE() {
+    for bucket in $(gsutil ls -p $proj); do
+      LIFECYCLE="$(gsutil lifecycle get $bucket)"
+      echo "[x] bucket $bucket in project $proj : LIFECYCLE POLICY"
+      echo "$LIFECYCLE"
+    done
+}
+
+# GCS bucket logging checker (usage logs and storage logs for a bucket)
+
+function BUCKET_LOGGING() {
+    for bucket in $(gsutil ls -p $proj); do
+      BLOGGING="$(gsutil logging get $bucket)"
+      echo "[x] bucket $bucket in project $proj : BUCKET LOGGING"
+      echo "$BLOGGING"
+    done
+}
+
+# gcs bucket cors configuration
+
+function CORS() {
+    for bucket in $(gsutil ls -p $proj); do
+      CORS="$(gsutil cors get $bucket)"
+      echo "[x] bucket $bucket in project $proj : CORS SETUP"
+      echo "$CORS"
     done
 }
 
