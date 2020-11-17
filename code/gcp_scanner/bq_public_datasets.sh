@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# scan Priceline BQ datasets - made public or outsiders added provided access to the dataset
+# scan BQ datasets - made public or outsiders added provided access to the dataset
 
 set -o pipefail # trace ERR through pipes
 set -o errtrace # trace ERR through 'time command' and other functions
