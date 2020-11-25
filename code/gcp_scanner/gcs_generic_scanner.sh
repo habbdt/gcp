@@ -11,7 +11,7 @@ GCS_SCAN=$2
 if [ "$#" -ne 2 ]; then
   echo "Usage: gcs_generic_scanner.sh <search_phrase> <gcs_search>"
   echo "search phrase - common word in the gcp project naming pattern"
-  echo "GCS_SEARCH: BACKEND_BUCKETS, EMPTY_BUCKET"
+  echo "GCS_SEARCH: BACKEND_BUCKETS, EMPTY_BUCKET, BUCKET_LIFECYCLE (change storage class)"
   exit
 fi
 
@@ -73,6 +73,47 @@ function EMPTY_BUCKET() {
     done
 }
 
+# bucket life-cycle check - storage class change
+
+function BUCKET_LIFECYCLE() {
+    GCP_PROJECT=$(gcloud projects list --format="get(projectId)" \
+                  --filter=$SEARCH_PHRASE)
+
+    for proj in $GCP_PROJECT; do
+      API_STATUS="$(gcloud services list --enabled --filter=NAME~storage \
+        --project $proj)"
+      if [ -z "$API_STATUS" ]; then
+        :
+      else
+        BUCKET_LIST="$(gsutil ls -p $proj)"
+        if [ -z "$BUCKET_LIST" ]
+        then
+          :
+        else
+          for bucket in $BUCKET_LIST ; do
+            LIFECYCLE_CHKR="$(gsutil lifecycle get $bucket)"
+            if [[ "$LIFECYCLE_CHKR" =~ .*"no lifecycle configuration".* ]]
+            then
+              :
+            else
+              LC_CHKR_SC="$(gsutil defstorageclass get $bucket | awk '{print $NF}')"
+              LC_CHKR_TGT_SC="$(gsutil lifecycle get $bucket \
+                              | jq -r '.rule | .[] | select (.action.type == "SetStorageClass") | "\(.action.type) \(.action.storageClass) \(.condition.age)"')"
+
+              if [ -z "$LC_CHKR_TGT_SC" ]
+              then
+                :
+              else
+                echo "[!] bucket $bucket in project $proj lifecyclepolicy target storage class "
+                echo "$LC_CHKR_SC,$LC_CHKR_TGT_SC"
+              fi
+            fi
+          done
+        fi
+      fi
+    done
+}
+
 # execute function based on script argument
 
 case $GCS_SCAN in
@@ -83,6 +124,10 @@ case $GCS_SCAN in
 
   EMPTY_BUCKET)
     EMPTY_BUCKET
+    ;;
+
+  BUCKET_LIFECYCLE)
+    BUCKET_LIFECYCLE
     ;;
 
 esac
