@@ -41,7 +41,6 @@ function scoutSuiteRun() {
       echo "[x] running scoutSuite for project $proj"
       scout gcp --user-account -f --max-workers 50 --report-dir /tmp/scoutSuite-$date \
           --organization-id $ORG --project-id $proj  --no-browser 2>&1 > /dev/null
-      exit
     done
 }
 
