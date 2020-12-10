@@ -9,7 +9,7 @@ if [ "$#" -ne 2 ]
 then
     echo "Usage: master-scanner.sh <service_name> <search_term>"
     echo "Services: ORG, BQ, GKE, GCE, GCS, CF, SERVICES, PUBLIC_IPS, SHARED_VPC, PROJECTS_IAM, \
-          EXTERNAL_IPS, SERVICE_ACCOUNTS_KEYS, LOGGING_SINKS, LOGGING_LIST"
+          EXTERNAL_IPS, SERVICE_ACCOUNTS_KEYS, LOGGING_SINKS, LOGGING_LIST, ORG_IAM_IDENTITY, PROJECT_IAM_IDENTITY"
     echo "search_term: search using common term in the gcp project naming pattern e.g. 3m-prod"
     exit 1
 fi
@@ -51,6 +51,33 @@ function ORG() {
         echo "$GCP_PROJECT"
       fi
     fi
+}
+
+# organization level IAM roles and permissions
+
+function ORG_IAM_IDENTITY() {
+  ORG="$(gcloud organizations list --format="get(ID)" \
+          | cut -d "/" -f2)"
+
+  ORG_IAM="$(gcloud organizations get-iam-policy $ORG \
+       --flatten="bindings[].members" --format="csv(bindings.role,bindings.members)")"
+  for i in $ORG_IAM; do
+    echo "$ORG","$i"
+  done
+}
+
+# project level IAM roles and permissions
+
+function PROJECT_IAM_IDENTITY() {
+  echo "hello"
+  project
+  for proj in $GCP_PROJECT; do
+    PROJ_IAM="$(gcloud projects get-iam-policy $proj \
+    --flatten="bindings[].members" --format="csv(bindings.role,bindings.members,type)")"
+    for p in $PROJ_IAM; do
+      echo "$proj","$p"
+    done
+  done
 }
 
 # services function
@@ -396,6 +423,14 @@ case $GCP_SERVICE in
     LOGGING_LIST
     ;;
 
+  ORG_IAM_IDENTITY)
+    ORG_IAM_IDENTITY
+    ;;
+
+  PROJECT_IAM_IDENTITY)
+    PROJECT_IAM_IDENTITY
+    ;;
+
   ALL)
     ORG
     SERVICES
@@ -410,5 +445,7 @@ case $GCP_SERVICE in
     SERVICE_ACCOUNTS_KEYS
     LOGGING_SINKS
     LOGGING_LIST
+    ORG_IAM_IDENTITY
+    PROJECT_IAM_IDENTITY
     ;;
 esac
