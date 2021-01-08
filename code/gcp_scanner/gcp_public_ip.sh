@@ -32,6 +32,7 @@ function external_ip_checker() {
         :
       else
         gce_instances_extip
+        gclb_frontend_ip
         external_ips
         cloudsql_ips
       fi
@@ -88,6 +89,29 @@ function cloudsql_ips() {
         fi
       done
     fi
+}
+
+# gclb frontend external IP address
+
+function gclb_frontend_ip() {
+  FORWARDING_RULE_NAME="$(gcloud compute forwarding-rules list --project=$proj \
+                        --format='csv(NAME,REGION)' | sed '1d')"
+
+  for rule in $FORWARDING_RULE_NAME ; do
+    NAME="$(echo $rule | cut -d "," -f1)"
+    REGION="$(echo $rule | cut -d "," -f2)"
+
+    if [ -z "$REGION" ]
+    then
+      GLOBAL_FW_IP="$(gcloud compute forwarding-rules describe $NAME \
+                    --global  --format=json --project $proj | jq '.IPAddress')"
+      echo "[!] gclb frontend external ip is: $GLOBAL_FW_IP"
+    else
+      REGIONAL_FW_IP="$(gcloud compute forwarding-rules describe $NAME \
+                    --region $REGION --format=json --project $proj| jq '.IPAddress')"
+      echo "[!] gclb frontend external ip is: $REGIONAL_FW_IP"
+    fi
+  done
 }
 
 # call function
