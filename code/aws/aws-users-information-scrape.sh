@@ -18,18 +18,29 @@ fi
 function get-access-key-last-used-info() {
     USERS="$(aws iam list-users --output text | awk '{print $NF}')"
 
+    echo "Username,AccessKeyId,Status,CreateDate,AccessKeyLastUsed"
+
     for usr in $USERS ; do
       ACCESSKEYID="$(aws iam list-access-keys --user $usr | \
-                     jq '.AccessKeyMetadata | .[] | .AccessKeyId')"
+                     jq '.AccessKeyMetadata | .[] | .AccessKeyId'| sed 's/"//g')"
 
-      ACCESSKEYLASTUSED="$(aws iam get-access-key-last-used --access-key-id $ACCESSKEYID \
+      ACCESSKEYMETADATA="$(aws iam list-access-keys --user $usr | \
+                   jq '.AccessKeyMetadata | .[] | .UserName + "," + .AccessKeyId + "," + .Status + "," + .CreateDate')"
+
+      for accesskeyid in $ACCESSKEYID ; do
+
+        ACCESSKEYLASTUSED="$(aws iam get-access-key-last-used --access-key-id $accesskeyid | \
                           jq '.AccessKeyLastUsed.LastUsedDate')"
 
-      ACCESSKEYMETADAT="$(aws iam list-access-keys --user $usr | \
-                          jq '.AccessKeyMetadata | .[] | .UserName + "," + .AccessKeyId + "," + .Status + "," + .CreateDate')"
 
-      echo "Username,AccessKeyId,Status,CreateDate,AccessKeyLastUsed"
-      echo "$ACCESSKEYMETADAT,$ACCESSKEYLASTUSED"
+        if [ "$ACCESSKEYLASTUSED" == "null"  ]
+        then
+          echo "$ACCESSKEYMETADATA,NotUsed"
+        else
+          echo "$ACCESSKEYMETADATA,$ACCESSKEYLASTUSED"
+        fi
+
+      done
     done
 }
 
